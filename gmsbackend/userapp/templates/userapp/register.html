@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .links {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Register</h1>
+        
+        {% if messages %}
+        <div class="error-message">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- ... existing code ... -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <h3>User Information</h3>
+                {{ user_form.as_p }}
+            </div>
+
+            <div class="form-group athlete-form" style="display: none;">
+                <h3>Athlete Information</h3>
+                {{ athlete_form.as_p }}
+            </div>
+
+            <div class="form-group school-form" style="display: none;">
+                <h3>School Information</h3>
+                {{ school_form.as_p }}
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+<!-- ... existing code ... -->
+
+        <div class="links">
+            <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            <p><a href="{% url 'home' %}">Back to Home</a></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userTypeSelect = document.querySelector('select[name="user_type"]');
+            const athleteForm = document.querySelector('.athlete-form');
+            const schoolForm = document.querySelector('.school-form');
+
+            function toggleForms() {
+                const selectedValue = userTypeSelect.value;
+                athleteForm.style.display = selectedValue === 'athlete' ? 'block' : 'none';
+                schoolForm.style.display = selectedValue === 'school' ? 'block' : 'none';
+            }
+
+            userTypeSelect.addEventListener('change', toggleForms);
+            toggleForms(); // Initial state
+        });
+    </script>
+</body>
+</html>
